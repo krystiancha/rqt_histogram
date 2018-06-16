@@ -117,6 +117,8 @@ class MatDataPlot(QWidget):
         vbox.addWidget(self._canvas)
         self.setLayout(vbox)
 
+        self._histogram_samples = 50
+
         self._canvas.mpl_connect('button_release_event', self._limits_changed)
 
     def _limits_changed(self, event):
@@ -130,7 +132,7 @@ class MatDataPlot(QWidget):
 
     def set_values(self, curve, data_x, data_y):
         self._canvas.axes.cla()
-        self._canvas.axes.hist(data_y)
+        self._canvas.axes.hist(data_y[-self._histogram_samples:-1])
 
     def redraw(self):
         self._canvas.axes.grid(True, color='gray')
