@@ -120,7 +120,7 @@ class PlotWidget(QWidget):
         self._initial_topics = initial_topics
 
         rp = rospkg.RosPack()
-        ui_file = os.path.join(rp.get_path('rqt_plot'), 'resource', 'plot.ui')
+        ui_file = os.path.join(rp.get_path('rqt_histogram'), 'resource', 'plot.ui')
         loadUi(ui_file, self)
         self.subscribe_topic_button.setIcon(QIcon.fromTheme('list-add'))
         self.remove_topic_button.setIcon(QIcon.fromTheme('list-remove'))
@@ -143,6 +143,7 @@ class PlotWidget(QWidget):
         # init and start update timer for plot
         self._update_plot_timer = QTimer(self)
         self._update_plot_timer.timeout.connect(self.update_plot)
+        self.remove_topic_button.pressed.connect(self.remove_topic)
 
     def switch_data_plot_widget(self, data_plot):
         self.enable_timer(enabled=False)
@@ -153,7 +154,6 @@ class PlotWidget(QWidget):
 
         self.data_plot = data_plot
         self.data_plot_layout.addWidget(self.data_plot)
-        self.data_plot.autoscroll(self.autoscroll_checkbox.isChecked())
 
         # setup drag 'n drop
         self.data_plot.dropEvent = self.dropEvent
@@ -253,6 +253,8 @@ class PlotWidget(QWidget):
         if not self.pause_button.isChecked():
             # if pause button is not pressed, enable timer based on subscribed topics
             self.enable_timer(self._rosdata)
+        self.topic_edit.setEnabled(len(self._rosdata) == 0)
+        self.subscribe_topic_button.setEnabled(len(self._rosdata) == 0)
         self.data_plot.redraw()
 
     def _update_remove_topic_menu(self):
@@ -269,8 +271,6 @@ class PlotWidget(QWidget):
             all_action = QAction('All', self._remove_topic_menu)
             all_action.triggered.connect(self.clean_up_subscribers)
             self._remove_topic_menu.addAction(all_action)
-
-        self.remove_topic_button.setMenu(self._remove_topic_menu)
 
     def add_topic(self, topic_name):
         topics_changed = False
@@ -290,10 +290,13 @@ class PlotWidget(QWidget):
         if topics_changed:
             self._subscribed_topics_changed()
 
-    def remove_topic(self, topic_name):
-        self._rosdata[topic_name].close()
-        del self._rosdata[topic_name]
-        self.data_plot.remove_curve(topic_name)
+    def remove_topic(self):
+        if len(self._rosdata) == 0:
+            return
+
+        self._rosdata[self._rosdata.keys()[0]].close()
+        del self._rosdata[self._rosdata.keys()[0]]
+        self.data_plot.remove_curve(None)
 
         self._subscribed_topics_changed()
 

@@ -126,7 +126,7 @@ class MatDataPlot(QWidget):
         pass
 
     def remove_curve(self, curve_id):
-        pass
+        self._canvas.axes.cla()
 
     def set_values(self, curve, data_x, data_y):
         self._canvas.axes.cla()
