@@ -117,62 +117,33 @@ class MatDataPlot(QWidget):
         vbox.addWidget(self._canvas)
         self.setLayout(vbox)
 
-        self._curves = {}
-        self._current_vline = None
         self._canvas.mpl_connect('button_release_event', self._limits_changed)
 
     def _limits_changed(self, event):
-        self.limits_changed.emit()
+        pass
 
     def add_curve(self, curve_id, curve_name, curve_color=QColor(Qt.blue), markers_on=False):
-
-        # adding an empty curve and change the limits, so save and restore them
-        x_limits = self.get_xlim()
-        y_limits = self.get_ylim()
-        if markers_on:
-            marker_size = 3
-        else:
-            marker_size = 0
-        line = self._canvas.axes.plot([], [], 'o-', markersize=marker_size, label=curve_name, linewidth=1, picker=5, color=curve_color.name())[0]
-        self._curves[curve_id] = line
-        self._update_legend()
-        self.set_xlim(x_limits)
-        self.set_ylim(y_limits)
+        pass
 
     def remove_curve(self, curve_id):
-        curve_id = str(curve_id)
-        if curve_id in self._curves:
-            self._curves[curve_id].remove()
-            del self._curves[curve_id]
-            self._update_legend()
-
-    def _update_legend(self):
-        handles, labels = self._canvas.axes.get_legend_handles_labels()
-        if handles:
-            hl = sorted(zip(handles, labels), key=operator.itemgetter(1))
-            handles, labels = zip(*hl)
-        self._canvas.axes.legend(handles, labels, loc='upper left')
+        pass
 
     def set_values(self, curve, data_x, data_y):
-        line = self._curves[curve]
-        line.set_data(data_x, data_y)
+        self._canvas.axes.cla()
+        self._canvas.axes.hist(data_y)
 
     def redraw(self):
         self._canvas.axes.grid(True, color='gray')
         self._canvas.draw()
 
     def vline(self, x, color):
-        # convert color range from (0,255) to (0,1.0) 
-        matcolor=(color[0]/255.0, color[1]/255.0, color[2]/255.0)
-        if self._current_vline:
-            self._current_vline.remove()
-        self._current_vline = self._canvas.axes.axvline(x=x, color=matcolor)
+        pass
 
     def set_xlim(self, limits):
-        self._canvas.axes.set_xbound(lower=limits[0], upper=limits[1])
+        pass
 
     def set_ylim(self, limits):
-        self._canvas.axes.set_ybound(lower=limits[0], upper=limits[1])
+        pass
 
     def get_xlim(self):
         return list(self._canvas.axes.get_xbound())
