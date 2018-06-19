@@ -138,7 +138,6 @@ class PlotWidget(QWidget):
 
         self._start_time = rospy.get_time()
         self._rosdata = {}
-        self._remove_topic_menu = QMenu()
 
         # init and start update timer for plot
         self._update_plot_timer = QTimer(self)
@@ -220,6 +219,10 @@ class PlotWidget(QWidget):
     def on_subscribe_topic_button_clicked(self):
         self.add_topic(str(self.topic_edit.text()))
 
+    @Slot()
+    def on_remove_topic_button_clicked(self):
+        self.remove_topic()
+
     @Slot(bool)
     def on_pause_button_clicked(self, checked):
         self.enable_timer(not checked)
@@ -249,30 +252,26 @@ class PlotWidget(QWidget):
                 self.data_plot.redraw()
 
     def _subscribed_topics_changed(self):
-        self._update_remove_topic_menu()
         if not self.pause_button.isChecked():
             # if pause button is not pressed, enable timer based on subscribed topics
             self.enable_timer(self._rosdata)
+        if len(self._rosdata) > 0:
+            self.topic_edit.setEnabled(False)
+            self.subscribe_topic_button.setEnabled(False)
+            self.remove_topic_button.setEnabled(True)
+        else:
+            self.topic_edit.setEnabled(True)
+            self.subscribe_topic_button.setEnabled(True)
+            self.remove_topic_button.setEnabled(False)
         self.data_plot.redraw()
 
     def _update_remove_topic_menu(self):
-        def make_remove_topic_function(x):
-            return lambda: self.remove_topic(x)
-
-        self._remove_topic_menu.clear()
-        for topic_name in sorted(self._rosdata.keys()):
-            action = QAction(topic_name, self._remove_topic_menu)
-            action.triggered.connect(make_remove_topic_function(topic_name))
-            self._remove_topic_menu.addAction(action)
-
-        if len(self._rosdata) > 1:
-            all_action = QAction('All', self._remove_topic_menu)
-            all_action.triggered.connect(self.clean_up_subscribers)
-            self._remove_topic_menu.addAction(all_action)
-
-        self.remove_topic_button.setMenu(self._remove_topic_menu)
+        pass
 
     def add_topic(self, topic_name):
+        if len(self._rosdata) > 0:
+            return
+
         topics_changed = False
         for topic_name in get_plot_fields(topic_name)[0]:
             if topic_name in self._rosdata:
@@ -290,7 +289,8 @@ class PlotWidget(QWidget):
         if topics_changed:
             self._subscribed_topics_changed()
 
-    def remove_topic(self, topic_name):
+    def remove_topic(self):
+        topic_name = self._rosdata.keys()[0]
         self._rosdata[topic_name].close()
         del self._rosdata[topic_name]
         self.data_plot.remove_curve(topic_name)
