@@ -65,7 +65,7 @@ class Plot(Plugin):
         context.add_widget(self._widget)
 
     def _parse_args(self, argv):
-        parser = argparse.ArgumentParser(prog='rqt_plot', add_help=False)
+        parser = argparse.ArgumentParser(prog='rqt_histogram', add_help=False)
         Plot.add_arguments(parser)
         args = parser.parse_args(argv)
 
@@ -92,7 +92,7 @@ class Plot(Plugin):
                     c_topics.append(sub_t)
             # #1053: resolve command-line topic names
             import rosgraph
-            c_topics = [rosgraph.names.script_resolve_name('rqt_plot', n) for n in c_topics]
+            c_topics = [rosgraph.names.script_resolve_name('rqt_histogram', n) for n in c_topics]
             if type(c_topics) == list:
                 topic_list.extend(c_topics)
             else:

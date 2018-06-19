@@ -1,18 +1,16 @@
 <package>
-  <name>rqt_plot</name>
+  <name>rqt_histogram</name>
   <version>0.4.8</version>
-  <description>rqt_plot provides a GUI plugin visualizing numeric values in a 2D plot using different plotting backends.</description>
-  <maintainer email="dthomas@osrfoundation.org">Dirk Thomas</maintainer>
-  <maintainer email="scholz@sim.tu-darmstadt.de">Dorian Scholz</maintainer>
-  <maintainer email="namniart@gmail.com">Austin Hendrix</maintainer>
+  <description>rqt_histogram provides a GUI plugin visualizing numeric values in a histogram using different plotting backends.</description>
+  <maintainer email="krystiancha@gmail.com">Krystian Chachula</maintainer>
 
   <license>BSD</license>
 
-  <url type="website">http://wiki.ros.org/rqt_plot</url>
-  <url type="repository">https://github.com/ros-visualization/rqt_plot</url>
-  <url type="bugtracker">https://github.com/ros-visualization/rqt_plot/issues</url>
+  <url type="repository">https://github.com/protecto/rqt_histogram</url>
+  <url type="bugtracker">https://github.com/protecto/rqt_histogram/issues</url>
 
   <author>Dorian Scholz</author>
+  <author>Krystian Chachuła</author>
 
   <buildtool_depend>catkin</buildtool_depend>
 

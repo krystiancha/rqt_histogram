@@ -4,9 +4,9 @@ from distutils.core import setup
 from catkin_pkg.python_setup import generate_distutils_setup
 
 d = generate_distutils_setup(
-    packages=['rqt_plot', 'rqt_plot.data_plot'],
+    packages=['rqt_histogram', 'rqt_histogram.data_plot'],
     package_dir={'': 'src'},
-    scripts=['scripts/rqt_plot']
+    scripts=['scripts/rqt_histogram']
 )
 
 setup(**d)
