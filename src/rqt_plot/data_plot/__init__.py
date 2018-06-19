@@ -122,7 +122,6 @@ class DataPlot(QWidget):
         self._plot_index = 0
         self._color_index = 0
         self._markers_on = False
-        self._autoscroll = True
 
         self._autoscale_x = True
         self._autoscale_y = DataPlot.SCALE_ALL
@@ -280,10 +279,6 @@ class DataPlot(QWidget):
 
     # interface out to the managing DATA component: load data, update data,
     # etc
-    def autoscroll(self, enabled=True):
-        """Enable or disable autoscrolling of the plot"""
-        self._autoscroll = enabled
-
     def redraw(self):
         self._redraw.emit()
 
@@ -429,22 +424,6 @@ class DataPlot(QWidget):
                 if len(curve['x']) > 0:
                     x_limit[0] = min(x_limit[0], curve['x'].min())
                     x_limit[1] = max(x_limit[1], curve['x'].max())
-        elif self._autoscroll:
-            # get current width of plot
-            x_limit = self.get_xlim()
-            x_width = x_limit[1] - x_limit[0]
-
-            # reset the upper x_limit so that we ignore the previous position
-            x_limit[1] = -numpy.inf
-            
-            # get largest X value
-            for curve_id in self._curves:
-                curve = self._curves[curve_id]
-                if len(curve['x']) > 0:
-                    x_limit[1] = max(x_limit[1], curve['x'].max())
-
-            # set lower limit based on width
-            x_limit[0] = x_limit[1] - x_width
         else:
             # don't modify limit, or get it from plot
             x_limit = self.get_xlim()
