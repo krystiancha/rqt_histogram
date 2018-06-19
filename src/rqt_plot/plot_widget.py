@@ -249,10 +249,12 @@ class PlotWidget(QWidget):
             # if pause button is not pressed, enable timer based on subscribed topics
             self.enable_timer(self._rosdata)
         if len(self._rosdata) > 0:
+            self.topic_edit.setText(self._rosdata.keys()[0])
             self.topic_edit.setEnabled(False)
             self.subscribe_topic_button.setEnabled(False)
             self.remove_topic_button.setEnabled(True)
         else:
+            self.topic_edit.setText("/")
             self.topic_edit.setEnabled(True)
             self.subscribe_topic_button.setEnabled(True)
             self.remove_topic_button.setEnabled(False)
