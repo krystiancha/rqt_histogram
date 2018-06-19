@@ -71,14 +71,8 @@ class PyQtGraphDataPlot(QWidget):
 
     def add_curve(self, curve_id, curve_name, curve_color=QColor(Qt.blue), markers_on=False):
         pen = mkPen(curve_color, width=1)
-        symbol = "o"
-        symbolPen = mkPen(QColor(Qt.black))
-        symbolBrush = mkBrush(curve_color)
         # this adds the item to the plot and legend
-        if markers_on:
-            plot = self._plot_widget.plot(name=curve_name, pen=pen, symbol=symbol, symbolPen=symbolPen, symbolBrush=symbolBrush, symbolSize=4)
-        else:
-            plot = self._plot_widget.plot(name=curve_name, pen=pen)
+        plot = self._plot_widget.plot(stepMode=True, fillLevel=0, brush=(0,0,255,150))
         self._curves[curve_id] = plot
 
     def remove_curve(self, curve_id):
@@ -102,7 +96,9 @@ class PyQtGraphDataPlot(QWidget):
 
     def set_values(self, curve_id, data_x, data_y):
         curve = self._curves[curve_id]
-        curve.setData(data_x, data_y)
+        y, x = numpy.histogram(data_y)
+        curve.setData(x, y)
+        self._plot_widget.autoRange()
 
     def vline(self, x, color):
         if self._current_vline:

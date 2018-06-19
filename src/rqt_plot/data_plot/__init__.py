@@ -86,14 +86,14 @@ class DataPlot(QWidget):
         {
             'title': 'MatPlot',
             'widget_class': MatDataPlot,
-            'description': 'Based on MatPlotLib\n- needs most CPU\n- needs matplotlib >= 1.1.0\n- if using PySide: PySide > 1.1.0\n',
-            'enabled': MatDataPlot is not None,
+            'description': 'NOT IMPLEMENTED\nBased on MatPlotLib\n- needs most CPU\n- needs matplotlib >= 1.1.0\n- if using PySide: PySide > 1.1.0\n',
+            'enabled': False,
         },
         {
             'title': 'QwtPlot',
             'widget_class': QwtDataPlot,
-            'description': 'Based on QwtPlot\n- does not use timestamps\n- uses least CPU\n- needs Python Qwt bindings\n',
-            'enabled': QwtDataPlot is not None,
+            'description': 'NOT IMPLEMENTED\nBased on QwtPlot\n- does not use timestamps\n- uses least CPU\n- needs Python Qwt bindings\n',
+            'enabled': False,
         },
     ]
 
