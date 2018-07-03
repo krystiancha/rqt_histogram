@@ -12,9 +12,7 @@ source devel/setup.bash
 cd src
 git clone https://github.com/protecto/rqt_histogram.git
 cd ../
-catkin_make
 
 # Running
-rqt --force-discover --standalone rqt_histogram  # At first run
 rqt --standalone rqt_histogram
 ```
