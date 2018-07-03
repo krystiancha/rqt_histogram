@@ -66,6 +66,8 @@ class PyQtGraphDataPlot(QWidget):
         self.setLayout(vbox)
         self._plot_widget.getPlotItem().sigRangeChanged.connect(self.limits_changed)
 
+        self.bins = 10
+        self.window = 100
         self._curves = {}
         self._current_vline = None
 
@@ -96,8 +98,11 @@ class PyQtGraphDataPlot(QWidget):
 
     def set_values(self, curve_id, data_x, data_y):
         curve = self._curves[curve_id]
-        y, x = numpy.histogram(data_y)
-        curve.setData(x, y)
+        if len(data_y) > 0:
+            y, x = numpy.histogram(data_y[-self.window:], self.bins)
+            curve.setData(x, y)
+        else:
+            curve.clear()
         self._plot_widget.autoRange()
 
     def vline(self, x, color):

@@ -118,6 +118,8 @@ class Plot(Plugin):
     def save_settings(self, plugin_settings, instance_settings):
         self._data_plot.save_settings(plugin_settings, instance_settings)
         instance_settings.set_value('topics', pack(self._widget._rosdata.keys()))
+        instance_settings.set_value('window', str(self._widget.data_plot._data_plot_widget.window).decode())
+        instance_settings.set_value('bins', str(self._widget.data_plot._data_plot_widget.bins).decode())
 
     def restore_settings(self, plugin_settings, instance_settings):
         self._update_title()
@@ -127,6 +129,18 @@ class Plot(Plugin):
             if topics:
                 for topic in topics:
                     self._widget.add_topic(topic)
+
+        try:
+            self._widget.data_plot._data_plot_widget.window = int(instance_settings.value('window'))
+        except (TypeError, ValueError):
+            self._widget.data_plot._data_plot_widget.window = 100
+        self._widget.window.setText(str(self._widget.data_plot._data_plot_widget.window))
+
+        try:
+            self._widget.data_plot._data_plot_widget.bins = int(instance_settings.value('bins'))
+        except (TypeError, ValueError):
+            self._widget.data_plot._data_plot_widget.bins = 10
+        self._widget.bins.setText(str(self._widget.data_plot._data_plot_widget.bins))
 
         self._data_plot.restore_settings(plugin_settings, instance_settings)
 

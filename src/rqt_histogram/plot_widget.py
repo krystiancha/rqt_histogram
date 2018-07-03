@@ -222,6 +222,14 @@ class PlotWidget(QWidget):
     def on_remove_topic_button_clicked(self):
         self.remove_topic()
 
+    @Slot()
+    def on_bins_returnPressed(self):
+        self.data_plot._data_plot_widget.bins = int(self.bins.text())
+
+    @Slot()
+    def on_window_returnPressed(self):
+        self.data_plot._data_plot_widget.window = int(self.window.text())
+
     @Slot(bool)
     def on_pause_button_clicked(self, checked):
         self.enable_timer(not checked)
