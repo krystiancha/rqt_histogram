@@ -8,6 +8,8 @@ A fork of rqt_plot that presents the data as a histogram.
 pyqtgraph>=0.10.0
 ```
 
+Please, make sure you have installed `pyqtgraph` at version at least `0.10`. Failing to do that may result in a segmentation fault.
+
 ## Installation and usage
 ```bash
 cd ~/catkin_ws
