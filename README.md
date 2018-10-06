@@ -3,6 +3,9 @@ A fork of rqt_plot that presents the data as a histogram.
 
 ![demo gif](https://raw.githubusercontent.com/protecto/rqt_histogram/master/docs/demo.gif)
 
+Screenshot from a real rqt project:
+![screenshot](https://raw.githubusercontent.com/protecto/rqt_histogram/master/docs/real_world.png)
+
 ## Requirements
 ```text
 pyqtgraph>=0.10.0
